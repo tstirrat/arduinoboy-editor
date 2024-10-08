@@ -1,11 +1,7 @@
-import { Flex } from "./Flex";
 import { Card } from "primereact/card";
-import { Dropdown } from "primereact/dropdown";
 import { Callback } from "../types";
 import { MidiOutConfig, Settings } from "../lib/settings";
-import { Field } from "./Field";
-import { MIDI_CHANNEL_OPTIONS, UNKNOWN_CHANNEL } from "../lib/globals";
-import { Checkbox } from "primereact/checkbox";
+import { UNKNOWN_CHANNEL } from "../lib/globals";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
@@ -35,7 +31,7 @@ const DEFAULT_VALUE: MidiOutSettings = {
 export const LsdjMidiOutModeSettings: React.FC<{
   value: MidiOutSettings | undefined;
   onChange: Callback<MidiOutSettings>;
-}> = ({ value = DEFAULT_VALUE, onChange }) => {
+}> = ({ value = DEFAULT_VALUE }) => {
   return (
     <Card title="LSDJ MIDI OUT Mode Settings">
       <DataTable
