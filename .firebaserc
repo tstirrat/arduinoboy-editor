@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "misc-hosting-2b440"
+  },
+  "targets": {
+    "misc-hosting-2b440": {
+      "hosting": {
+        "arduinoboy-editor": [
+          "arduinoboy-editor"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}
