@@ -22,4 +22,4 @@ jobs:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MISC_HOSTING_2B440 }}
           projectId: misc-hosting-2b440
-          target: ardiunoboy-editor
+          target: arduinoboy-editor
