@@ -1,15 +1,9 @@
-import { useState } from "react";
 import { Flex } from "./Flex";
 import { Card } from "primereact/card";
 import { Dropdown } from "primereact/dropdown";
-import { SelectItem } from "primereact/selectitem";
 import { Callback } from "../types";
 import { Settings } from "../lib/settings";
-
-const MIDI_CHANNELS: SelectItem[] = new Array(16).fill(0).map((_, i) => ({
-  label: `${i + 1}`,
-  value: i,
-}));
+import { MIDI_CHANNEL_OPTIONS, UNKNOWN_CHANNEL } from "../lib/globals";
 
 const SYNTHS = [
   { label: "PU1 Channel" },
@@ -19,29 +13,39 @@ const SYNTHS = [
   { label: "POLY Channel" },
 ];
 
-const DEFAULT_MAPPING = [0, 0, 0, 0, 0];
+const DEFAULT_VALUE: MgbSettingsValue = {
+  mgbChannels: [
+    UNKNOWN_CHANNEL,
+    UNKNOWN_CHANNEL,
+    UNKNOWN_CHANNEL,
+    UNKNOWN_CHANNEL,
+    UNKNOWN_CHANNEL,
+  ],
+};
+
+export type MgbSettingsValue = Pick<Settings, "mgbChannels">;
 
 export const MgbSettings: React.FC<{
-  settings: Settings | undefined;
-}> = ({ settings }) => {
-  const [channelConfig, setChannelConfig] = useState(
-    settings?.mgbChannels ?? DEFAULT_MAPPING
-  );
+  value: MgbSettingsValue | undefined;
+  onChange: Callback<MgbSettingsValue>;
+}> = ({ value = DEFAULT_VALUE, onChange }) => {
+  const handleChange = (i: number, val: number) => {
+    const newChannels: MgbSettingsValue["mgbChannels"] = [...value.mgbChannels];
+
+    newChannels[i] = val;
+
+    onChange({ mgbChannels: newChannels });
+  };
+
   return (
     <Card title="mGB MIDI Settings">
       <Flex row align="center" gap={8}>
-        {SYNTHS.map((s, i) => (
+        {SYNTHS.map((synth, i) => (
           <ChannelSelect
-            key={s.label}
-            label={s.label}
-            value={channelConfig[i]}
-            onChange={(channel) =>
-              setChannelConfig((c) => {
-                const clone = [...c];
-                clone[i] = channel;
-                return clone;
-              })
-            }
+            key={synth.label}
+            label={synth.label}
+            value={value.mgbChannels[i]}
+            onChange={(val) => handleChange(i, val)}
           />
         ))}
       </Flex>
@@ -59,7 +63,7 @@ const ChannelSelect: React.FC<{
       <label>{label}</label>
       <Dropdown
         name="pu1"
-        options={MIDI_CHANNELS}
+        options={MIDI_CHANNEL_OPTIONS}
         value={value}
         onChange={(e) => onChange(e.value)}
         placeholder="Channel"
