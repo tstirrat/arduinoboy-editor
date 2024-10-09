@@ -21,7 +21,7 @@ export const Flex = styled.div<{
 
   ${({ justify }) => justify && `justify-content: ${justify};`}
   ${({ align }) => align && `align-items: ${align};`}
-  ${({ gap }) => gap && `gap: ${gap}px;`}
+  ${({ gap = 8 }) => gap && `gap: ${gap}px;`}
 
   ${({ grow }) => grow && `flex-grow: ${grow};`}
   ${({ shrink }) => shrink && `flex-shrink: ${shrink}; min-width: 0;`}

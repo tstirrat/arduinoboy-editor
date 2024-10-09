@@ -18,7 +18,7 @@ export const LsdjSyncmapSettings: React.FC<{
 }> = ({ value = DEFAULT_VALUE, onChange }) => {
   return (
     <Card title="LSDJ LIVEMAP/SYNCMAP Settings">
-      <Flex row align="center" gap={8}>
+      <Flex row align="center">
         <Field label="MIDI Channel">
           {(id) => (
             <Dropdown

@@ -39,7 +39,7 @@ export const MgbSettings: React.FC<{
 
   return (
     <Card title="mGB MIDI Settings">
-      <Flex row align="center" gap={8}>
+      <Flex row align="center">
         {SYNTHS.map((synth, i) => (
           <ChannelSelect
             key={synth.label}

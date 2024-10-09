@@ -23,7 +23,7 @@ export const KeyboardModeSettings: React.FC<{
 }> = ({ value = DEFAULT_VALUE, onChange }) => {
   return (
     <Card title="Keyboard Mode Settings">
-      <Flex row align="center" gap={8}>
+      <Flex row align="center">
         <Field label="MIDI Channel">
           {(id) => (
             <Dropdown

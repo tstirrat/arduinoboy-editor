@@ -14,11 +14,11 @@ import styled from "@emotion/styled";
 export const ConnectionPanel: React.FC<{
   onConnect: Callback<Settings>;
 }> = ({ onConnect }) => {
-  const perm = useMidiPermission();
-  const { midi, inputs, outputs } = useMidiPortNames();
-
   const [outputName, setOutputName] = useState<string | undefined>(undefined);
   const [inputName, setInputName] = useState<string | undefined>(undefined);
+
+  const perm = useMidiPermission();
+  const { midi, inputs, outputs } = useMidiPortNames();
 
   const [state, setState] = useState<{
     isConnected: boolean;
@@ -76,22 +76,9 @@ export const ConnectionPanel: React.FC<{
 
   return (
     <Card title="Connection">
-      <Flex col align="stretch" gap={8}>
-        <Flex row align="center" justify="start" gap={8} as="form">
-          <Field label="Output">
-            {(id) => (
-              <Dropdown
-                inputId={id}
-                name="midiOut"
-                options={outputs}
-                value={outputName}
-                onChange={(e) => setOutputName(e.value)}
-                placeholder="Select port"
-              />
-            )}
-          </Field>
-
-          <Field label="Input">
+      <Flex col align="stretch">
+        <Flex row align="center" justify="start" as="form">
+          <Field label="Input" vertical>
             {(id) => (
               <Dropdown
                 inputId={id}
@@ -103,8 +90,20 @@ export const ConnectionPanel: React.FC<{
               />
             )}
           </Field>
+          <Field label="Output" vertical>
+            {(id) => (
+              <Dropdown
+                inputId={id}
+                name="midiOut"
+                options={outputs}
+                value={outputName}
+                onChange={(e) => setOutputName(e.value)}
+                placeholder="Select port"
+              />
+            )}
+          </Field>
         </Flex>
-        <Flex row gap={8} align="stretch">
+        <Flex row align="stretch">
           <Button
             label="Connect"
             icon={PrimeIcons.PLAY}

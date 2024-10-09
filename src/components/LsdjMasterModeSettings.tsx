@@ -12,7 +12,7 @@ export const LsdjMasterModeSettings: React.FC<{
 }> = ({ value = UNKNOWN_CHANNEL, onChange }) => {
   return (
     <Card title="LSDJ Master Mode Settings">
-      <Flex row align="center" gap={8}>
+      <Flex row align="center">
         <Field label="MIDI Channel">
           {(id) => (
             <Dropdown
