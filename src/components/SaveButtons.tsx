@@ -1,8 +1,9 @@
 import { Flex } from "./Flex";
 import { Button } from "primereact/button";
 import { Task } from "../types";
+import { PrimeIcons } from "primereact/api";
 
-export const SendSettings: React.FC<{
+export const SaveButtons: React.FC<{
   onRefresh: Task;
   onSave: Task;
   isConnected: boolean;
@@ -10,12 +11,18 @@ export const SendSettings: React.FC<{
   return (
     <Flex row align="center" justify="end">
       <Button
-        severity="info"
+        severity="secondary"
         label="Refresh"
         onClick={onRefresh}
         disabled={!isConnected}
+        icon={PrimeIcons.SYNC}
       />
-      <Button label="Save changes" onClick={onSave} disabled={!isConnected} />
+      <Button
+        label="Save changes"
+        icon={PrimeIcons.SAVE}
+        onClick={onSave}
+        disabled={!isConnected}
+      />
     </Flex>
   );
 };

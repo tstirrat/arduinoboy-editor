@@ -9,8 +9,8 @@ import { LsdjSyncmapSettings } from "./components/LsdjSyncmapSettings";
 import { KeyboardModeSettings } from "./components/KeyboardModeSettings";
 import { LsdjMidiOutModeSettings } from "./components/LsdjMidiOutModeSettings";
 import { Text } from "./components/Typography";
-import { ArduinoModeSettings } from "./components/ArduinoModeSettings";
-import { SendSettings } from "./components/SendSettings";
+import { ModeSettings } from "./components/ModeSettings";
+import { SaveButtons } from "./components/SaveButtons";
 import { useProgrammerSettings } from "./hooks/use_programmer_settings";
 import { useMidiAccess, useMidiPermission } from "./hooks/use_midi";
 
@@ -45,17 +45,17 @@ function App() {
       <Flex col align="stretch" style={{ maxWidth: 1000 }}>
         <Text variant="h1">ArduinoBoy Web Editor for v1.3</Text>
         <Flex row justify="space-between">
-          <ConnectionPanel
-            isConnected={isConnected}
-            onConnect={connect}
-            onDisconnect={disconnect}
-            midi={midi}
-          />
-          <ArduinoModeSettings
-            value={settings}
-            onChange={updatePartialSettings}
-          />
+          <Flex grow="1">
+            <ConnectionPanel
+              isConnected={isConnected}
+              onConnect={connect}
+              onDisconnect={disconnect}
+              midi={midi}
+            />
+          </Flex>
+          <ModeSettings value={settings} onChange={updatePartialSettings} />
         </Flex>
+
         <Flex row>
           <LsdjSlaveModeSettings
             value={settings}
@@ -70,6 +70,7 @@ function App() {
             onChange={updatePartialSettings}
           />
         </Flex>
+
         <Flex row>
           <MgbSettings value={settings} onChange={updatePartialSettings} />
           <LsdjSyncmapSettings
@@ -77,11 +78,13 @@ function App() {
             onChange={updatePartialSettings}
           />
         </Flex>
-        <SendSettings
+
+        <SaveButtons
           isConnected={isConnected}
           onSave={saveSettings}
           onRefresh={refreshSettings}
         />
+
         <LsdjMidiOutModeSettings
           value={settings}
           onChange={updatePartialSettings}

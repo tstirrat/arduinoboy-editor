@@ -38,10 +38,7 @@ export const LsdjMidiOutModeSettings: React.FC<{
 }> = ({ value = DEFAULT_VALUE, onChange }) => {
   return (
     <Card title="LSDJ MIDI OUT Mode Settings (TODO)">
-      <DataTable
-        value={value.lsdjMidiOut.channels}
-        tableStyle={{ minWidth: "50rem" }}
-      >
+      <DataTable value={value.lsdjMidiOut.channels}>
         <Column field="noteChannel" header="Note CH" />
         <Column field="ccChannel" header="CC CH" />
         <Column field="ccMode" header="CC Mode" />

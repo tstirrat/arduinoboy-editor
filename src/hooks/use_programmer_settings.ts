@@ -35,7 +35,7 @@ export function useProgrammerSettings({
     if (!input.current) throw new Error(`In port not found ${inputName}`);
     if (!output.current) throw new Error(`Out port not found ${outputName}`);
 
-    console.log("Connecting...", outputName, inputName);
+    console.log("Connecting...", outputName, "/", inputName);
     const { settingsData, disconnect } = await connect(
       input.current,
       output.current
@@ -58,10 +58,12 @@ export function useProgrammerSettings({
   const refreshSettings = async () => {
     if (!input.current) throw new Error(`In port not found!`);
     if (!output.current) throw new Error(`Out port not found!`);
+    setSettings(undefined);
     const newSettings = await programmerGetSettings(
       input.current,
       output.current
     );
+    console.log("refreshed: ", toSettings(newSettings));
     setSettings(toSettings(newSettings));
   };
 
@@ -75,6 +77,7 @@ export function useProgrammerSettings({
       output.current,
       settings
     );
+    console.log("saved. got back:", toSettings(newSettings));
     setSettings(toSettings(newSettings));
   };
 

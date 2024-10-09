@@ -19,8 +19,9 @@ const MSG_CONNECTED = 66;
 
 const MSG_SETTINGS = 0x40;
 
-const MSG_SETTNGS_SET = 70;
-const MSG_SETTINGS_GET = 71;
+const MSG_SETTINGS_SET = 70;
+const MSG_SETTINGS_GET = 76;
+// const MSG_SETTINGS_RESET = 71;
 const MSG_MODE_GET = 73;
 // const MSG_MODE_SET = 74;
 // const MSG_MIDI_OUT_DELAY_SET = 75;
@@ -157,17 +158,20 @@ const msgRequestConnection = () =>
 const msgKeepalive = () =>
   message([MSG_CONNECTED, MAJOR_VERSION, MINOR_VERSION]);
 const msgGetSettings = () => message([MSG_SETTINGS_GET]);
+// const msgResetSettings = () => message([MSG_SETTINGS_RESET]);
 // const msgGetMode = () => message([MSG_MODE_GET]);
 // const msgSetMode = (mode: number) => message([MSG_MODE_SET, mode]);
 const msgSetSettings = (settings: Uint8Array) =>
-  message([MSG_SETTNGS_SET, ...settings]);
+  message([MSG_SETTINGS_SET, ...settings]);
 
 function toSettingsByteArray(settings: Settings): Uint8Array {
   return new Uint8Array([
-    0x7f,
-    settings.versionMajor,
-    settings.versionMinor,
-    0x7f, //memory init check
+    // these bytes not included in MSG_SETTINGS_SET
+    // 0x7f,
+    // settings.versionMajor,
+    // settings.versionMinor,
+    // 0x7f, //memory init check
+
     settings.forceMode, //force mode (forces lsdj to be sl)
     settings.mode, //mode
 

@@ -6,11 +6,11 @@ import { Settings } from "../lib/settings";
 import { Field } from "./Field";
 import { SelectItem } from "primereact/selectitem";
 
-type ArduinoModeSettingsValue = Pick<Settings, "mode" | "forceMode">;
+type ModeSettingsValue = Pick<Settings, "mode" | "forceMode">;
 
 const UNKNOWN_MODE = 7;
 
-const DEFAULT_VALUE: ArduinoModeSettingsValue = {
+const DEFAULT_VALUE: ModeSettingsValue = {
   mode: UNKNOWN_MODE,
   forceMode: UNKNOWN_MODE,
 };
@@ -31,17 +31,14 @@ const MODE_OPTIONS: SelectItem[] = new Array(8).fill(0).map((_, i) => ({
   value: i,
 }));
 
-export const ArduinoModeSettings: React.FC<{
-  value: ArduinoModeSettingsValue | undefined;
-  onChange: Callback<ArduinoModeSettingsValue>;
+export const ModeSettings: React.FC<{
+  value: ModeSettingsValue | undefined;
+  onChange: Callback<ModeSettingsValue>;
 }> = ({ value = DEFAULT_VALUE, onChange }) => {
   const { mode, forceMode } = value;
 
   return (
-    <Card
-      title="LSDJ Slave Mode Settings"
-      style={{ flexShrink: 1, minWidth: 0 }}
-    >
+    <Card title="LSDJ Slave Mode Settings">
       <Flex row align="center">
         <Field label="Mode" vertical>
           {(id) => (

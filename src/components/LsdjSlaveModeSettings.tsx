@@ -25,7 +25,7 @@ export const LsdjSlaveModeSettings: React.FC<{
               inputId={id}
               name="midiIn"
               options={MIDI_CHANNEL_OPTIONS}
-              value={value}
+              value={value.lsdjSlaveModeChannel}
               onChange={(e) => onChange({ lsdjSlaveModeChannel: e.value })}
               placeholder="CH"
             />

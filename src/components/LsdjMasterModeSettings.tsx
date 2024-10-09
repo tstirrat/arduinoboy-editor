@@ -25,7 +25,7 @@ export const LsdjMasterModeSettings: React.FC<{
               inputId={id}
               name="midiIn"
               options={MIDI_CHANNEL_OPTIONS}
-              value={value}
+              value={value.lsdjMasterModeChannel}
               onChange={(e) => onChange({ lsdjMasterModeChannel: e.value })}
               placeholder="CH"
             />
