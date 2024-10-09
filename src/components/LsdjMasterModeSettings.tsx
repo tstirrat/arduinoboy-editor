@@ -6,10 +6,16 @@ import { Settings } from "../lib/settings";
 import { Field } from "./Field";
 import { MIDI_CHANNEL_OPTIONS, UNKNOWN_CHANNEL } from "../lib/globals";
 
+type LsdjMasterModeSettingsValue = Pick<Settings, "lsdjMasterModeChannel">;
+
+const DEFAULT_VALUE: LsdjMasterModeSettingsValue = {
+  lsdjMasterModeChannel: UNKNOWN_CHANNEL,
+};
+
 export const LsdjMasterModeSettings: React.FC<{
-  value: Settings["lsdjMasterModeChannel"] | undefined;
-  onChange: Callback<Settings["lsdjMasterModeChannel"]>;
-}> = ({ value = UNKNOWN_CHANNEL, onChange }) => {
+  value: LsdjMasterModeSettingsValue | undefined;
+  onChange: Callback<LsdjMasterModeSettingsValue>;
+}> = ({ value = DEFAULT_VALUE, onChange }) => {
   return (
     <Card title="LSDJ Master Mode Settings">
       <Flex row align="center">
@@ -20,8 +26,8 @@ export const LsdjMasterModeSettings: React.FC<{
               name="midiIn"
               options={MIDI_CHANNEL_OPTIONS}
               value={value}
-              onChange={(e) => onChange(e.value)}
-              placeholder="Select port"
+              onChange={(e) => onChange({ lsdjMasterModeChannel: e.value })}
+              placeholder="CH"
             />
           )}
         </Field>

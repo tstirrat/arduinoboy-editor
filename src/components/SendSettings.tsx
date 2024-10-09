@@ -5,11 +5,17 @@ import { Task } from "../types";
 export const SendSettings: React.FC<{
   onRefresh: Task;
   onSave: Task;
-}> = ({ onSave, onRefresh }) => {
+  isConnected: boolean;
+}> = ({ isConnected, onSave, onRefresh }) => {
   return (
     <Flex row align="center" justify="end">
-      <Button severity="info" label="Refresh" onClick={onRefresh} />
-      <Button label="Save changes" onClick={onSave} />
+      <Button
+        severity="info"
+        label="Refresh"
+        onClick={onRefresh}
+        disabled={!isConnected}
+      />
+      <Button label="Save changes" onClick={onSave} disabled={!isConnected} />
     </Flex>
   );
 };

@@ -4,6 +4,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Callback } from "../types";
 import { Settings } from "../lib/settings";
 import { MIDI_CHANNEL_OPTIONS, UNKNOWN_CHANNEL } from "../lib/globals";
+import { Field } from "./Field";
 
 const SYNTHS = [
   { label: "PU1 Channel" },
@@ -59,15 +60,16 @@ const ChannelSelect: React.FC<{
   onChange: Callback<number>;
 }> = ({ label, value, onChange }) => {
   return (
-    <Flex col align="center">
-      <label>{label}</label>
-      <Dropdown
-        name="pu1"
-        options={MIDI_CHANNEL_OPTIONS}
-        value={value}
-        onChange={(e) => onChange(e.value)}
-        placeholder="Channel"
-      />
-    </Flex>
+    <Field label={label} vertical>
+      {(id) => (
+        <Dropdown
+          id={id}
+          options={MIDI_CHANNEL_OPTIONS}
+          value={value}
+          onChange={(e) => onChange(e.value)}
+          placeholder="CH"
+        />
+      )}
+    </Field>
   );
 };

@@ -1,66 +1,24 @@
 import { Dropdown } from "primereact/dropdown";
-import { useMidiPermission, useMidiPortNames } from "../hooks/use_midi";
 import { Flex } from "./Flex";
-import { FormEventHandler, useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "primereact/button";
 import { PrimeIcons } from "primereact/api";
-import { connect } from "../lib/programmer";
 import { Field } from "./Field";
 import { Card } from "primereact/card";
-import { Callback, Task } from "../types";
-import { Settings, toSettings } from "../lib/settings";
+import { Task } from "../types";
 import styled from "@emotion/styled";
+import { exists } from "../lib/globals";
 
 export const ConnectionPanel: React.FC<{
-  onConnect: Callback<Settings>;
-}> = ({ onConnect }) => {
+  midi: MIDIAccess;
+  isConnected: boolean;
+  onConnect: (outputName: string, inputName: string) => void;
+  onDisconnect: Task;
+}> = ({ midi, isConnected, onConnect, onDisconnect }) => {
+  const { inputs, outputs } = useMidiPortNames({ midi });
+
   const [outputName, setOutputName] = useState<string | undefined>(undefined);
   const [inputName, setInputName] = useState<string | undefined>(undefined);
-
-  const perm = useMidiPermission();
-  const { midi, inputs, outputs } = useMidiPortNames();
-
-  const [state, setState] = useState<{
-    isConnected: boolean;
-    disconnect: Task | undefined;
-  }>({
-    isConnected: false,
-    disconnect: undefined,
-  });
-
-  const handleSubmit: FormEventHandler = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (!midi || !outputName || !inputName)
-      throw new Error("Missing input/output config");
-
-    (async () => {
-      console.log("Connecting...", outputName, inputName);
-      const { settingsData, disconnect } = await connect(
-        midi,
-        outputName,
-        inputName
-      );
-
-      console.log("Got settings", toSettings(settingsData));
-      onConnect(toSettings(settingsData));
-      setState({ isConnected: true, disconnect });
-    })();
-  };
-
-  const handleDisconnect = () => {
-    if (state.disconnect) {
-      state.disconnect();
-      setState({ isConnected: false, disconnect: undefined });
-    }
-  };
-
-  if (!perm) return <strong>Error: Permission unavailable</strong>;
-
-  if (!midi) return <strong>Error: No MIDIAccess</strong>;
-
-  if (!midi.sysexEnabled) return <strong>Error: SysEx not enabled</strong>;
 
   if (!outputName && midi.outputs.size) {
     const first = [...midi.outputs.values()][0];
@@ -83,6 +41,7 @@ export const ConnectionPanel: React.FC<{
               <Dropdown
                 inputId={id}
                 name="midiIn"
+                disabled={isConnected}
                 options={inputs}
                 value={inputName}
                 onChange={(e) => setInputName(e.value)}
@@ -95,6 +54,7 @@ export const ConnectionPanel: React.FC<{
               <Dropdown
                 inputId={id}
                 name="midiOut"
+                disabled={isConnected}
                 options={outputs}
                 value={outputName}
                 onChange={(e) => setOutputName(e.value)}
@@ -107,17 +67,20 @@ export const ConnectionPanel: React.FC<{
           <Button
             label="Connect"
             icon={PrimeIcons.PLAY}
-            onClick={handleSubmit}
+            onClick={() =>
+              outputName && inputName && onConnect(outputName, inputName)
+            }
+            disabled={isConnected}
           />
-          <ConnectionStatus isConnected={state.isConnected}>
-            {state ? "Connected" : "Not connected"}
+          <ConnectionStatus isConnected={isConnected}>
+            {isConnected ? "Connected" : "Not connected"}
           </ConnectionStatus>
           <Button
             severity="danger"
             icon={PrimeIcons.STOP_CIRCLE}
             type="button"
-            onClick={handleDisconnect}
-            disabled={!state.isConnected}
+            onClick={() => onDisconnect()}
+            disabled={!isConnected}
           />
         </Flex>
       </Flex>
@@ -133,3 +96,19 @@ const ConnectionStatus = styled.div<{ isConnected: boolean }>`
   padding: 4px 8px;
   border-radius: 4px;
 `;
+
+function useMidiPortNames({ midi }: { midi: MIDIAccess | undefined }) {
+  const outputs = useMemo(() => {
+    if (!midi) return [];
+
+    return [...midi.outputs.values()].map((o) => o.name).filter(exists);
+  }, [midi]);
+
+  const inputs = useMemo(() => {
+    if (!midi) return [];
+
+    return [...midi.inputs.values()].map((o) => o.name).filter(exists);
+  }, [midi]);
+
+  return { inputs, outputs };
+}

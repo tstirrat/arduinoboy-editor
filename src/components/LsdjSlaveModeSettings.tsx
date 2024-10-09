@@ -6,10 +6,16 @@ import { Settings } from "../lib/settings";
 import { Field } from "./Field";
 import { MIDI_CHANNEL_OPTIONS, UNKNOWN_CHANNEL } from "../lib/globals";
 
+type LsdjSlaveModeSettingsValue = Pick<Settings, "lsdjSlaveModeChannel">;
+
+const DEFAULT_VALUE: LsdjSlaveModeSettingsValue = {
+  lsdjSlaveModeChannel: UNKNOWN_CHANNEL,
+};
+
 export const LsdjSlaveModeSettings: React.FC<{
-  value: Settings["lsdjSlaveModeChannel"] | undefined;
-  onChange: Callback<Settings["lsdjSlaveModeChannel"]>;
-}> = ({ value = UNKNOWN_CHANNEL, onChange }) => {
+  value: LsdjSlaveModeSettingsValue | undefined;
+  onChange: Callback<LsdjSlaveModeSettingsValue>;
+}> = ({ value = DEFAULT_VALUE, onChange }) => {
   return (
     <Card title="LSDJ Slave Mode Settings">
       <Flex row align="center">
@@ -20,8 +26,8 @@ export const LsdjSlaveModeSettings: React.FC<{
               name="midiIn"
               options={MIDI_CHANNEL_OPTIONS}
               value={value}
-              onChange={(e) => onChange(e.value)}
-              placeholder="Select port"
+              onChange={(e) => onChange({ lsdjSlaveModeChannel: e.value })}
+              placeholder="CH"
             />
           )}
         </Field>

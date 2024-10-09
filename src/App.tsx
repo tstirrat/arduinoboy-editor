@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback } from "react";
 import { ConnectionPanel } from "./components/ConnectionPanel";
 import { Flex } from "./components/Flex";
 import { MgbSettings } from "./components/MgbSettings";
@@ -11,35 +11,46 @@ import { LsdjMidiOutModeSettings } from "./components/LsdjMidiOutModeSettings";
 import { Text } from "./components/Typography";
 import { ArduinoModeSettings } from "./components/ArduinoModeSettings";
 import { SendSettings } from "./components/SendSettings";
+import { useProgrammerSettings } from "./hooks/use_programmer_settings";
+import { useMidiAccess, useMidiPermission } from "./hooks/use_midi";
 
 function App() {
-  const [settings, setSettings] = useState<Settings | undefined>(undefined);
+  const perm = useMidiPermission();
+  const midi = useMidiAccess();
 
-  const updateLsdjSlaveModeChannel = (
-    lsdjSlaveModeChannel: Settings["lsdjSlaveModeChannel"]
-  ) => {
-    setSettings((prev) => (prev ? { ...prev, lsdjSlaveModeChannel } : prev));
-  };
+  const {
+    isConnected,
+    settings,
+    setSettings,
+    connect,
+    disconnect,
+    refreshSettings,
+    saveSettings,
+  } = useProgrammerSettings({ midi });
 
-  const updateLsdjMasterModeChannel = (
-    lsdjMasterModeChannel: Settings["lsdjMasterModeChannel"]
-  ) => {
-    setSettings((prev) => (prev ? { ...prev, lsdjMasterModeChannel } : prev));
-  };
+  const updatePartialSettings = useCallback(
+    (updated: Partial<Settings>) => {
+      setSettings((prev) => (prev ? { ...prev, ...updated } : prev));
+    },
+    [setSettings]
+  );
 
-  const updatePartialSettings = (updated: Partial<Settings>) => {
-    setSettings((prev) => (prev ? { ...prev, ...updated } : prev));
-  };
-
-  const handleSave = () => {};
-  const handleRefresh = () => {};
+  if (!perm) return <strong>Error: No Web MIDI permission</strong>;
+  if (!midi) return <strong>Error: No MIDIAccess</strong>;
+  if (!midi.sysexEnabled)
+    return <strong>Error: MIDI SysEx not available</strong>;
 
   return (
     <Flex row justify="center" align="center">
       <Flex col align="stretch" style={{ maxWidth: 1000 }}>
         <Text variant="h1">ArduinoBoy Web Editor for v1.3</Text>
         <Flex row justify="space-between">
-          <ConnectionPanel onConnect={setSettings} />
+          <ConnectionPanel
+            isConnected={isConnected}
+            onConnect={connect}
+            onDisconnect={disconnect}
+            midi={midi}
+          />
           <ArduinoModeSettings
             value={settings}
             onChange={updatePartialSettings}
@@ -47,12 +58,12 @@ function App() {
         </Flex>
         <Flex row>
           <LsdjSlaveModeSettings
-            value={settings?.lsdjSlaveModeChannel}
-            onChange={updateLsdjSlaveModeChannel}
+            value={settings}
+            onChange={updatePartialSettings}
           />
           <LsdjMasterModeSettings
-            value={settings?.lsdjMasterModeChannel}
-            onChange={updateLsdjMasterModeChannel}
+            value={settings}
+            onChange={updatePartialSettings}
           />
           <KeyboardModeSettings
             value={settings}
@@ -66,7 +77,11 @@ function App() {
             onChange={updatePartialSettings}
           />
         </Flex>
-        <SendSettings onSave={handleSave} onRefresh={handleRefresh} />
+        <SendSettings
+          isConnected={isConnected}
+          onSave={saveSettings}
+          onRefresh={refreshSettings}
+        />
         <LsdjMidiOutModeSettings
           value={settings}
           onChange={updatePartialSettings}

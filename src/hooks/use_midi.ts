@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useMidiPermission() {
   const [granted, setGranted] = useState<PermissionState | undefined>(
@@ -20,7 +20,7 @@ export function useMidiPermission() {
   return granted;
 }
 
-function useMidiAccess() {
+export function useMidiAccess() {
   const [midi, setMidi] = useState<MIDIAccess | undefined>(undefined);
 
   useEffect(() => {
@@ -35,22 +35,4 @@ function useMidiAccess() {
   }, []);
 
   return midi;
-}
-
-export function useMidiPortNames() {
-  const midi = useMidiAccess();
-
-  const outputs = useMemo(() => {
-    if (!midi) return [];
-
-    return [...midi.outputs.values()].map((o) => o.name);
-  }, [midi]);
-
-  const inputs = useMemo(() => {
-    if (!midi) return [];
-
-    return [...midi.inputs.values()].map((o) => o.name);
-  }, [midi]);
-
-  return { midi, inputs, outputs };
 }

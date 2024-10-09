@@ -8,3 +8,5 @@ export const MIDI_CHANNEL_OPTIONS: SelectItemOptionsType = new Array(17)
     value: i,
     disabled: i === UNKNOWN_CHANNEL,
   }));
+
+export const exists = <T>(v: T | undefined | null): v is T => !!v;
