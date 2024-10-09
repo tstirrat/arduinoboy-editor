@@ -23,7 +23,7 @@ export const KeyboardModeSettings: React.FC<{
 }> = ({ value = DEFAULT_VALUE, onChange }) => {
   return (
     <Card title="Keyboard Mode Settings">
-      <Flex row align="center">
+      <Flex col align="start">
         <Field label="MIDI Channel">
           {(id) => (
             <Dropdown
@@ -38,11 +38,16 @@ export const KeyboardModeSettings: React.FC<{
             />
           )}
         </Field>
-        <Checkbox
-          title="Test"
-          checked={value.kbCompatMode}
-          onChange={(e) => onChange({ ...value, kbCompatMode: e.value })}
-        />
+        <Field label="Compat. mode">
+          {(id) => (
+            <Checkbox
+              id={id}
+              checked={value.kbCompatMode}
+              value={value.kbCompatMode}
+              onChange={(e) => onChange({ ...value, kbCompatMode: e.value })}
+            />
+          )}
+        </Field>
       </Flex>
     </Card>
   );
