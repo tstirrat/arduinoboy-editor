@@ -23,7 +23,7 @@ const MODES = [
   "MIDI (mGB)",
   "LSDJ MIDIMAP",
   "LSDJ MIDIOUT",
-  "--", // moce not set/loading
+  "--", // mode not set/loading
 ];
 
 const MODE_OPTIONS: SelectItem[] = new Array(8).fill(0).map((_, i) => ({
