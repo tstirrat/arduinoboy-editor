@@ -20,7 +20,7 @@ const MODES = [
   "LSDJ Master",
   "LSDJ PC Keyboard",
   "Nanoloop",
-  "MIDI Passthrough (mGB)",
+  "MIDI (mGB)",
   "LSDJ MIDIMAP",
   "LSDJ MIDIOUT",
   "--", // moce not set/loading
