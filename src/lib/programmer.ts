@@ -21,7 +21,7 @@ const MSG_SETTINGS = 0x40;
 
 const MSG_SETTINGS_SET = 70;
 const MSG_SETTINGS_GET = 76;
-// const MSG_SETTINGS_RESET = 71;
+const MSG_SETTINGS_RESET = 71;
 const MSG_MODE_GET = 73;
 // const MSG_MODE_SET = 74;
 // const MSG_MIDI_OUT_DELAY_SET = 75;
@@ -87,6 +87,14 @@ export async function setSettings(
   settings: Settings
 ): Promise<Uint8Array> {
   output.send(msgSetSettings(toSettingsByteArray(settings)));
+  return waitFor(input, MSG_SETTINGS);
+}
+
+export async function resetSettings(
+  input: MIDIInput,
+  output: MIDIOutput
+): Promise<Uint8Array> {
+  output.send(msgResetSettings());
   return waitFor(input, MSG_SETTINGS);
 }
 
@@ -158,7 +166,7 @@ const msgRequestConnection = () =>
 const msgKeepalive = () =>
   message([MSG_CONNECTED, MAJOR_VERSION, MINOR_VERSION]);
 const msgGetSettings = () => message([MSG_SETTINGS_GET]);
-// const msgResetSettings = () => message([MSG_SETTINGS_RESET]);
+const msgResetSettings = () => message([MSG_SETTINGS_RESET]);
 // const msgGetMode = () => message([MSG_MODE_GET]);
 // const msgSetMode = (mode: number) => message([MSG_MODE_SET, mode]);
 const msgSetSettings = (settings: Uint8Array) =>

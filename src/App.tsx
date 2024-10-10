@@ -24,8 +24,9 @@ function App() {
     setSettings,
     connect,
     disconnect,
-    refreshSettings,
     saveSettings,
+    refreshSettings,
+    resetSettings,
   } = useProgrammerSettings({ midi });
 
   const updatePartialSettings = useCallback(
@@ -83,6 +84,7 @@ function App() {
           isConnected={isConnected}
           onSave={saveSettings}
           onRefresh={refreshSettings}
+          onReset={resetSettings}
         />
 
         <LsdjMidiOutModeSettings

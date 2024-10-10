@@ -4,6 +4,7 @@ import {
   connect,
   getSettings as programmerGetSettings,
   setSettings as programmerSetSettings,
+  resetSettings as programmerResetSettings,
 } from "../lib/programmer";
 import { Task } from "../types";
 
@@ -67,6 +68,18 @@ export function useProgrammerSettings({
     setSettings(toSettings(newSettings));
   };
 
+  const resetSettings = async () => {
+    if (!input.current) throw new Error(`In port not found!`);
+    if (!output.current) throw new Error(`Out port not found!`);
+    setSettings(undefined);
+    const newSettings = await programmerResetSettings(
+      input.current,
+      output.current
+    );
+    console.log("reset settings: ", toSettings(newSettings));
+    setSettings(toSettings(newSettings));
+  };
+
   const saveSettings = async () => {
     if (!input.current) throw new Error(`In port not found!`);
     if (!output.current) throw new Error(`Out port not found!`);
@@ -89,5 +102,6 @@ export function useProgrammerSettings({
     disconnect,
     refreshSettings,
     saveSettings,
+    resetSettings,
   };
 }
