@@ -2,7 +2,7 @@ import { Callback, Task } from "../types";
 import { Settings } from "./settings";
 
 const MAJOR_VERSION = 0x01;
-const MINOR_VERSION = 0x03;
+const MINOR_VERSION = 0x04;
 
 const MIDI_STATUS_SYSEX = 0xf0;
 const SYSEX_EOF = 0xf7;
