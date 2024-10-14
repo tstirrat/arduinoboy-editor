@@ -1,8 +1,8 @@
 import { Callback, Task } from "../types";
 import { Settings } from "./settings";
 
-const MAJOR_VERSION = 0x01;
-const MINOR_VERSION = 0x04;
+export const MAJOR_VERSION = 0x01;
+export const MINOR_VERSION = 0x04;
 
 const MIDI_STATUS_SYSEX = 0xf0;
 const SYSEX_EOF = 0xf7;
@@ -68,6 +68,9 @@ export async function connect(
 function checkVersion(major: number, minor: number) {
   if (major !== MAJOR_VERSION && minor !== MINOR_VERSION) {
     console.warn(
+      `Version mismatch: Seen ${major}.${minor} expected: ${MAJOR_VERSION}.${MINOR_VERSION}`
+    );
+    throw new Error(
       `Version mismatch: Seen ${major}.${minor} expected: ${MAJOR_VERSION}.${MINOR_VERSION}`
     );
   }

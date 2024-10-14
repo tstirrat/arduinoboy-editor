@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { ConnectionPanel } from "./components/ConnectionPanel";
 import { Flex } from "./components/Flex";
 import { MgbSettings } from "./components/MgbSettings";
@@ -13,6 +13,8 @@ import { ModeSettings } from "./components/ModeSettings";
 import { SaveButtons } from "./components/SaveButtons";
 import { useProgrammerSettings } from "./hooks/use_programmer_settings";
 import { useMidiAccess, useMidiPermission } from "./hooks/use_midi";
+import { MAJOR_VERSION, MINOR_VERSION } from "./lib/programmer";
+import { Toast } from "primereact/toast";
 
 function App() {
   const perm = useMidiPermission();
@@ -36,20 +38,42 @@ function App() {
     [setSettings]
   );
 
+  const toast = useRef<Toast>(null);
+
   if (!perm) return <strong>Error: No Web MIDI permission</strong>;
   if (!midi) return <strong>Error: No MIDIAccess</strong>;
   if (!midi.sysexEnabled)
     return <strong>Error: MIDI SysEx not available</strong>;
 
+  const showError = (message: string) => {
+    toast.current?.show({
+      severity: "error",
+      summary: "Error",
+      detail: message,
+      life: 3000,
+    });
+  };
+
+  const connectAndShowErrors = async (outName: string, inName: string) => {
+    try {
+      await connect(outName, inName);
+    } catch (e) {
+      showError((e as Error).message);
+    }
+  };
+
   return (
     <Flex row justify="center" align="center">
+      <Toast ref={toast} />
       <Flex col align="stretch" style={{ maxWidth: 1000 }}>
-        <Text variant="h1">ArduinoBoy Web Editor for v1.3</Text>
+        <Text variant="h1">
+          ArduinoBoy Web Editor for v{MAJOR_VERSION}.{MINOR_VERSION}
+        </Text>
         <Flex row justify="space-between">
           <Flex grow="1">
             <ConnectionPanel
               isConnected={isConnected}
-              onConnect={connect}
+              onConnect={connectAndShowErrors}
               onDisconnect={disconnect}
               midi={midi}
             />
