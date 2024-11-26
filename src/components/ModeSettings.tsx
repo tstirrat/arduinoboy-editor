@@ -38,7 +38,7 @@ export const ModeSettings: React.FC<{
   const { mode, forceMode } = value;
 
   return (
-    <Card title="LSDJ Slave Mode Settings">
+    <Card title="Mode">
       <Flex row align="center">
         <Field label="Mode" vertical>
           {(id) => (
