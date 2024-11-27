@@ -1,4 +1,4 @@
-import { useCallback, useContext, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { ConnectionPanel } from "./components/ConnectionPanel";
 import { Flex } from "./components/Flex";
 import { MgbSettings } from "./components/MgbSettings";
