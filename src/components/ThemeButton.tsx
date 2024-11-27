@@ -20,7 +20,7 @@ export const ThemeButton: React.FC = () => {
   };
   return (
     <Button
-      icon={theme === "dark" ? PrimeIcons.MOON : PrimeIcons.SUN}
+      icon={theme === "dark" ? PrimeIcons.SUN : PrimeIcons.MOON}
       rounded
       text
       onClick={toggleTheme}
