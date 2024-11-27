@@ -12,7 +12,11 @@ const ICONS: Record<Theme, string> = {
   system: PrimeIcons.EYE,
 };
 
-const DEFAULT_THEME: Theme = "dark";
+/** The theme in the index.html head */
+const INITIAL_THEME: Theme = "dark";
+
+/** The default theme if the user has no local stored setting */
+const DEFAULT_THEME: Theme = "system";
 const THEME_CSS_ID = "app-theme";
 
 export const ThemeButton: React.FC = () => {
@@ -22,7 +26,7 @@ export const ThemeButton: React.FC = () => {
     undefined
   );
 
-  const [theme, setTheme] = useState<Theme>(userTheme ?? "system");
+  const [theme, setTheme] = useState<Theme>(userTheme ?? DEFAULT_THEME);
 
   const { changeTheme } = useContext(PrimeReactContext);
 
@@ -31,7 +35,7 @@ export const ThemeButton: React.FC = () => {
   // update initial user/system theme, once only
   useEffect(() => {
     changeTheme?.(
-      `lara-${DEFAULT_THEME}-teal`,
+      `lara-${INITIAL_THEME}-teal`,
       `lara-${actualTheme}-teal`,
       THEME_CSS_ID
     );
