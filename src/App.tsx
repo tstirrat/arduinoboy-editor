@@ -15,11 +15,7 @@ import { useProgrammerSettings } from "./hooks/use_programmer_settings";
 import { useMidiAccess, useMidiPermission } from "./hooks/use_midi";
 import { MAJOR_VERSION, MINOR_VERSION } from "./lib/programmer";
 import { Toast } from "primereact/toast";
-import { PrimeIcons, PrimeReactContext } from "primereact/api";
-import { Button } from "primereact/button";
 import { ThemeButton } from "./components/ThemeButton";
-
-type Theme = "light" | "dark";
 
 function App() {
   const perm = useMidiPermission();

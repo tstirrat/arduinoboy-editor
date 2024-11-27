@@ -1,7 +1,8 @@
-import { Theme } from "@emotion/react";
 import { PrimeReactContext, PrimeIcons } from "primereact/api";
 import { Button } from "primereact/button";
 import { useState, useContext } from "react";
+
+type Theme = "light" | "dark";
 
 export const ThemeButton: React.FC = () => {
   const [theme, setTheme] = useState<Theme>("dark");
