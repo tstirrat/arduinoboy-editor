@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
 import { ConnectionPanel } from "./components/ConnectionPanel";
 import { Flex } from "./components/Flex";
 import { MgbSettings } from "./components/MgbSettings";
@@ -15,6 +15,11 @@ import { useProgrammerSettings } from "./hooks/use_programmer_settings";
 import { useMidiAccess, useMidiPermission } from "./hooks/use_midi";
 import { MAJOR_VERSION, MINOR_VERSION } from "./lib/programmer";
 import { Toast } from "primereact/toast";
+import { PrimeIcons, PrimeReactContext } from "primereact/api";
+import { Button } from "primereact/button";
+import { ThemeButton } from "./components/ThemeButton";
+
+type Theme = "light" | "dark";
 
 function App() {
   const perm = useMidiPermission();
@@ -66,9 +71,12 @@ function App() {
     <Flex row justify="center" align="center">
       <Toast ref={toast} />
       <Flex col align="stretch" style={{ maxWidth: 1000 }}>
-        <Text variant="h1">
-          ArduinoBoy Web Editor for v{MAJOR_VERSION}.{MINOR_VERSION}
-        </Text>
+        <Flex row align="center" justify="space-between">
+          <Text variant="h1">
+            ArduinoBoy Web Editor for v{MAJOR_VERSION}.{MINOR_VERSION}
+          </Text>
+          <ThemeButton />
+        </Flex>
         <Flex row justify="space-between">
           <Flex grow="1">
             <ConnectionPanel
