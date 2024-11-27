@@ -16,6 +16,8 @@ import { useMidiAccess, useMidiPermission } from "./hooks/use_midi";
 import { MAJOR_VERSION, MINOR_VERSION } from "./lib/programmer";
 import { Toast } from "primereact/toast";
 import { ThemeButton } from "./components/ThemeButton";
+import { PrimeIcons } from "primereact/api";
+import { Button } from "primereact/button";
 
 function App() {
   const perm = useMidiPermission();
@@ -119,6 +121,15 @@ function App() {
           value={settings}
           onChange={updatePartialSettings}
         />
+        <Text>
+          <i className="pi pi-github"></i>&nbsp;
+          <a
+            href="https://github.com/tstirrat/arduinoboy-editor"
+            target="_blank"
+          >
+            https://github.com/tstirrat/arduinoboy-editor
+          </a>
+        </Text>
       </Flex>
     </Flex>
   );
